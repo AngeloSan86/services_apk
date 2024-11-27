@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servizi per tutti</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../www/css/index.css">
+
+    <style>
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center" style="background-image: url('../img/bg.jpg'); background-size: cover; background-attachment: fixed;">
+
+        <h1 class="text-center text-white display-3 fw-bold">Azienda / Freelancer</h1>
+        <h1 class="text-center text-white display-3 fw-bold mb-5">Login</h1>
+
+        <form id="loginFormCompany">
+            <div>
+                <div class="mb-3">
+                    <label for="email" class="form-label text-white">Inserisci la tua E-mail (obbligatorio)</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div id="emailError" class="error"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-white">Inserisci la tua Password (obbligatoria)</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <div id="passwordError" class="error"></div>
+                </div>
+            </div>
+
+
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-primary me-1 mt-2 mb-2 rounded" id="userAccess">Accedi</button>
+                <button type="button" class="btn btn-primary me-1 mt-2 mb-2 rounded">
+                    <a class="text-white text-decoration-none" href="../index.html">Annulla</a>
+                </button>
+            </div>
+
+            
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById('loginFormCompany').addEventListener('submit', handleLogin);
+
+        function handleLogin(e) {
+            e.preventDefault(); // Impedisce l'invio del modulo
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Recupera le compagnie esistenti dal localStorage
+            const companies = JSON.parse(localStorage.getItem('companies')) || [];
+
+            // Verifica se le credenziali corrispondono a una compagnia esistente
+            const company = companies.find(c => c.email === email && c.password === password);
+
+            if (company) {
+                // Salva l'email nel localStorage
+                localStorage.setItem('loggedInEmail', email);
+
+                // Salva l'oggetto completo della compagnia nel localStorage
+                localStorage.setItem('loggedInCompany', JSON.stringify(company));
+
+                // Credenziali corrette, reindirizza alla dashboard
+                window.location.href = "../dashboard.html";
+            } else {
+                // Credenziali errate, mostra un messaggio di errore
+                document.getElementById('emailError').textContent = "Email o password errati.";
+                document.getElementById('passwordError').textContent = "Email o password errati.";
+            }
+        }
+    </script>
+</body>
+</html>

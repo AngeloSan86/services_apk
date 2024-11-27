@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servizi per tutti</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../www/css/index.css">
+    <style>
+        body {
+            color: rgb(0, 0, 0);
+        }
+        .card-header, .card-body {
+            color: rgb(0, 0, 0);
+        }
+        .bg-light {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid vh-100 d-flex flex-column" style="background-image: url('../img/bg.jpg'); background-size: cover; background-attachment: fixed;">
+        
+        <!-- Header with company info -->
+        <header class="d-flex justify-content-between align-items-center p-3">
+            <div class="d-flex align-items-center">
+                <img src="img/defimg.jpg" alt="Logo" class="rounded-circle" id="profileImage" style="width: 40px; height: 40px;">
+                <div class="ms-3">
+                    <h5 class="text-white" id="companyName">Nome Cognome</h5>
+                    <small class="text-white" id="partitaIva">Partita IVA: N/A</small>
+                    <p class="text-white">Valutazione: ⭐⭐⭐⭐☆</p> <!-- Aggiunto il campo valutazione -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+            <div class="row w-100 mb-4">
+                <div class="col-md-8 mb-1">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            Andamento Economico
+                        </div>
+                        <div class="card-body">
+                            <canvas id="economicChart"></canvas> <!-- Il grafico è dimostrativo, lascia così com'è -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-success">
+                            Totale Guadagni
+                        </div>
+                        <div class="card-body text-center">
+                            <h2>€ 10,000</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row w-100">
+                <div class="col-md-6 mb-1">
+                    <div class="card">
+                        <div class="card-header">
+                            Ordini Evasi
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    Ordine 1 <p>€ 250</p>
+                                </li>
+                                <li class="list-group-item">
+                                    Ordine 2 <p>€ 150</p>
+                                </li>
+                                <li class="list-group-item">
+                                    Ordine 3 <p>€ 300</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Ordini da Evadere
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    Ordine 1 <p>€ 250</p>
+                                </li>
+                                <li class="list-group-item">
+                                    Ordine 2 <p>€ 150</p>
+                                </li>
+                                <li class="list-group-item">
+                                    Ordine 3 <p>€ 300</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer with logout button -->
+        <footer class="d-flex justify-content-between p-3 bg-light">
+            <button type="button" class="btn btn-secondary" id="logoutButton">Logout</button>
+            <button type="button" class="btn btn-success">
+                <a class="text-white text-decoration-none" href="nuovoAnnuncio.html?valutazione=⭐⭐⭐⭐☆">Crea Nuovo Annuncio</a>
+            </button>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Recupera la compagnia loggata dal localStorage
+        const loggedInCompany = JSON.parse(localStorage.getItem('loggedInCompany'));
+        
+        // Se la compagnia non è loggata, reindirizza alla pagina di login
+        if (!loggedInCompany) {
+            window.location.href = 'login.html'; // Se non loggato, manda al login
+        } else {
+            // Se l'utente è loggato, mostra le informazioni della compagnia
+            const ownerFirstName = loggedInCompany.ownerFirstName || 'Nome';  // Aggiungi 'ownerFirstName' se esiste
+            const ownerLastName = loggedInCompany.ownerLastName || 'Cognome';  // Aggiungi 'ownerLastName' se esiste
+
+
+
+
+                //////
+            const userImageElement = document.getElementById('profileImage');
+                userImageElement.src = loggedInCompany.profileImage || 'img/defimg.jpg'; // Immagine di default
+                ///////
+
+
+
+            document.getElementById('companyName').textContent = `${ownerFirstName} ${ownerLastName}`;
+            document.getElementById('partitaIva').textContent = `Partita IVA: ${loggedInCompany.vatOrFiscalCode || 'N/A'}`;
+
+            
+            //document.getElementById('profileImage').src = loggedInCompany.profileImage || '../img/defimg.jpg'; // Immagine del profilo
+        }
+
+        // Gestione del logout
+        document.getElementById('logoutButton').addEventListener('click', function(e) {
+            // Rimuove la compagnia loggata dal localStorage
+            localStorage.removeItem('loggedInCompany');
+            // Reindirizza alla pagina di login
+            window.location.href = '/login/companyLogin.html'; 
+        });
+
+        // Codice per inizializzare il grafico (dimostrativo)
+        const ctx = document.getElementById('economicChart').getContext('2d');
+        const economicChart = new Chart(ctx, {
+            type: 'line', // Cambia il tipo di grafico se necessario
+            data: {
+                labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu'], // Sostituisci con i tuoi dati
+                datasets: [{
+                    label: 'Andamento',
+                    data: [0, 10, 5, 2, 20, 30], // Sostituisci con i tuoi dati
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
